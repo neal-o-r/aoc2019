@@ -15,7 +15,7 @@ def recursive_fuel_required(mass: int) -> int:
 
 
 if __name__ == "__main__":
-    with open("data/day01.txt") as f:
+    with open("input/day01.txt") as f:
         lines = f.read().strip().split("\n")
 
     total_fuel = sum(fuel_required_for_mass(int(m)) for m in lines)
