@@ -31,7 +31,6 @@ def take_step(loc: Point, step: Step) -> Points:
 def points_from_path(loc: Point, path: Path) -> Points:
     """
     Turn a path into a list of points traversed on the path
-    return this as a dict, mapping point to when it was passed through
     """
     points = [loc]
     for step in path:
