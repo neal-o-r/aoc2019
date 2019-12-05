@@ -41,10 +41,4 @@ if __name__ == "__main__":
     for i in range(0, 100):
         for j in range(0, 100):
             if check_inputs((i, j), ops, 19690720):
-                print(100*i + j)
-
-
-
-
-
-
+                print(100 * i + j)
