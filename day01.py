@@ -1,4 +1,3 @@
-
 def fuel_required_for_mass(mass: int) -> int:
     return (mass // 3) - 2
 

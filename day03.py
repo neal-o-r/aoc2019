@@ -39,6 +39,8 @@ def points_from_path(loc: Point, path: Path) -> Points:
         loc = segment[-1]
 
     return points
+
+
 def intersections(points1: Points, points2: Points) -> Points:
     return list(set(points1[1:]) & set(points2[1:]))
 
@@ -47,7 +49,7 @@ def manhattan_distance_to_origin(pt: Point) -> int:
     return abs(pt[0]) + abs(pt[1])
 
 
-def steps_taken(pt : Point, points1 : Points, points2 : Points) -> int:
+def steps_taken(pt: Point, points1: Points, points2: Points) -> int:
     return points1.index(pt) + points2.index(pt)
 
 

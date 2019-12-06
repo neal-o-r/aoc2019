@@ -1,13 +1,13 @@
 from operator import add, mul
 
 
-def string_to_ints(text : str, delimiter : str = ',') -> list:
+def string_to_ints(text: str, delimiter: str = ",") -> list:
     return [int(i) for i in text.split(delimiter)]
 
 
-def update(i : int, all_ops : list) -> list:
+def update(i: int, all_ops: list) -> list:
 
-    op_type, left_index, right_index, to_index = all_ops[i:i+4]
+    op_type, left_index, right_index, to_index = all_ops[i : i + 4]
     f = add if op_type is 1 else mul
 
     val = f(all_ops[left_index], all_ops[right_index])
@@ -15,14 +15,14 @@ def update(i : int, all_ops : list) -> list:
     return [a if i != to_index else val for i, a in enumerate(all_ops)]
 
 
-def run(i : int, all_ops: list) -> list:
+def run(i: int, all_ops: list) -> list:
 
     if all_ops[i] is 99:
         return all_ops
-    return run(i+4, update(i, all_ops))
+    return run(i + 4, update(i, all_ops))
 
 
-def check_inputs(inputs : tuple, ops : list, value : int) -> bool:
+def check_inputs(inputs: tuple, ops: list, value: int) -> bool:
     ops[1], ops[2] = inputs
     return run(0, ops)[0] == value
 
