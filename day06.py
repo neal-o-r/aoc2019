@@ -4,10 +4,10 @@ from typing import Dict
 Orbits = Dict[str, set]
 
 
-def direct_orbits(pairs: list) -> Orbits:
+def direct_orbits(pairs: list, reverse : bool = False) -> Orbits:
     d = defaultdict(set)
     for p in pairs:
-        k, v = p.split(")")
+        k, v = p.split(")") if not reverse else p.split(")")[::-1]
         d[k].add(v)
     return d
 
@@ -16,24 +16,6 @@ def recursive_search(obj: str, orbits: Orbits, lst: list = []) -> set:
     if obj not in orbits:
         return lst
     return sum((recursive_search(o, orbits, lst + [o]) for o in orbits[obj]), [])
-
-
-def transfers(obj: str, orbits: Orbits, visited: set = set(), val: int = 0) -> int:
-    if "SAN" in orbits[obj]:
-        return val - 1
-    to_check = orbits[obj] - visited
-    return sum(transfers(o, orbits, visited | set([o]), val + 1) for o in to_check)
-
-
-def invert_orbits(orbits: Orbits) -> Orbits:
-    keys = list(orbits.keys())
-    vals = list(orbits.values())
-
-    for k, v in zip(keys, vals):
-        for vi in v:
-            orbits[vi].add(k)
-
-    return orbits
 
 
 if __name__ == "__main__":
@@ -46,6 +28,7 @@ if __name__ == "__main__":
     n_orb = sum(len(set(recursive_search(o, orbit))) for o in orbit)
     print(n_orb)
 
-    all_connections = invert_orbits(orbit)
-    n_trans = transfers("YOU", all_connections)
+    reverse_orbits = direct_orbits(text, reverse=True)
+    n_trans = len(set(recursive_search("YOU", reverse_orbits)) ^
+                  set(recursive_search("SAN", reverse_orbits)))
     print(n_trans)
