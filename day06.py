@@ -12,7 +12,7 @@ def direct_orbits(pairs: list, reverse : bool = False) -> Orbits:
     return d
 
 
-def recursive_search(obj: str, orbits: Orbits, lst: list = []) -> set:
+def recursive_search(obj: str, orbits: Orbits, lst: list = []) -> list:
     if obj not in orbits:
         return lst
     return sum((recursive_search(o, orbits, lst + [o]) for o in orbits[obj]), [])
