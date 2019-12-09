@@ -5,7 +5,6 @@ Program = List[int]
 Input = List[int]
 Output = Generator[int, int, int]
 Modes = List[int]
-Memory = Dict[int, int]
 
 
 nargs = {0: 0, 1: 4, 2: 4, 3: 2, 4: 2,
@@ -50,7 +49,7 @@ def intcode(program: Program, program_input: Input) -> Output:
             memory[write[2]] = int(reads[0] < reads[1])
         elif op is 8:
             memory[write[2]] = int(reads[0] == reads[1])
-        if op is 9:
+        elif op is 9:
             offset += reads[0]
 
 
