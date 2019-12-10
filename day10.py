@@ -1,6 +1,6 @@
 from itertools import cycle
 from typing import List, Tuple
-from math import atan2, sqrt, pi
+from math import atan2, sqrt, pi, hypot
 from collections import defaultdict
 
 
@@ -14,26 +14,35 @@ def get_pts(txt: str) -> Points:
 
 
 def angle(a: Point, b: Point) -> float:
-    a = atan2(b[1] - a[1], b[0] - a[0])
-    return round(a if a >= 0 else abs(a) + pi, 5)
+    a = atan2(b[0] - a[0], b[1] - a[1])
+    return round((2*pi - a) % (2 * pi), 5)
 
 
-def all_angles(pt, pts: Points) -> int:
-    return [angle(pt, p) if p != pt else None for p in pts]
-
-
-def compute_all_angles(pts: Points) -> list:
-    return [all_angles(p, pts) for p in pts]
+def count_angles(pt: Point, pts: Points) -> int:
+    return len(set(angle(p, pt) for p in pts if pt != p))
 
 
 def dist(a: Point, b: Point) -> float:
-    return sqrt((a[0] - a[1])**2 + (b[0] - b[1])**2)
+    return hypot((a[0] - b[0]), (b[1] - a[1]))
 
 
-def all_dists(pt: Point, pts: Points) -> list:
-    return [dist(pt, p) if p != pt else None for p in pts]
+def part2(pts: Points, n: int) -> Point:
+    loc = max(pts, key=lambda x: count_angles(x, pts))
+    pts = [p for p in pts if p != loc]
+    # order pts by distance to loc
+    d = defaultdict(list)
+    for p in pts:
+        a = angle(p, loc)
+        d[a] += [p]
 
-
+    d = {a: sorted(l, key=lambda x: dist(loc, x)) for a, l in d.items()}
+    i = 0
+    for a in cycle(sorted(set(angle(p, loc) for p in pts))):
+        if d[a] != []:
+            pt = d[a].pop(0)
+            i += 1
+            if i == n:
+                return pt
 
 
 if __name__ == "__main__":
@@ -42,10 +51,4 @@ if __name__ == "__main__":
         txt = f.read().replace("\n", "")
 
     pts = get_pts(txt)
-    all_ang = compute_all_angles(pts)
-
-    count = lambda x: len(set(x)) - 1
-    views = list(map(count, all_ang))
-
-
-    print(max(views))
+    print(max(count_angles(p, pts) for p in pts))
