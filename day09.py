@@ -31,7 +31,6 @@ def intcode(program: Program, program_input: Input) -> Output:
         reads = [(memory[x], x, memory[x + offset])[m]
                     for x, m in zip(args, modes)]
         write = [(x, None, x + offset)[m] for x, m in zip(args, modes)]
-
         i += size
         if op is 1:
             memory[write[2]] = reads[0] + reads[1]
@@ -60,5 +59,3 @@ if __name__ == "__main__":
 
     print(list(intcode(program, [1])))
     print(list(intcode(program, [2])))
-
-
