@@ -33,16 +33,15 @@ def part2(pts: Points, n: int) -> Point:
     d = defaultdict(list)
     for p in pts:
         a = angle(p, loc)
-        d[a] += [p]
+        d[a] += sorted([p] + d[a], key=lambda x: dist(loc, x))
 
-    d = {a: sorted(l, key=lambda x: dist(loc, x)) for a, l in d.items()}
     i = 0
-    for a in cycle(sorted(set(angle(p, loc) for p in pts))):
-        if d[a] != []:
+    for a in cycle(sorted(d.keys())):
+        if len(d[a]) is not 0:
             pt = d[a].pop(0)
             i += 1
-            if i == n:
-                return pt
+        if i == n:
+            return pt
 
 
 if __name__ == "__main__":
